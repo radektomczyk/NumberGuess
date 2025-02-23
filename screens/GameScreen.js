@@ -16,35 +16,37 @@ function generateRandomBetween(min, max, exclude) {
 let min = 1;
 let max = 100;
 
-function GameScreen({ userNumber }) {
-    const initialGuess = generateRandomBetween(min, max, userNumber);
+function GameScreen({ userNumber, onGameOver }) {
+    const initialGuess = generateRandomBetween(1, 100, userNumber);
     const [currentGuess, setCurrentGuess] = useState(initialGuess);
 
-    useEffect(()=>{
-        if(currentGuess === userNumber){
-            
+    useEffect(() => {
+        if (currentGuess === userNumber) {
+            onGameOver();
         }
-    })
+    },[currentGuess, userNumber, onGameOver]);
 
     const nextGuessHandler = (direction) => {
-        if(direction === "lower" && currentGuess < userNumber || direction === "greater" && currentGuess > userNumber){
+        if (
+            (direction === "lower" && currentGuess < userNumber) ||
+            (direction === "greater" && currentGuess > userNumber)
+        ) {
             Alert.alert("Don't lie!", "You know that this is wrong...", [
                 { text: "Sorry!", style: "cancel" },
             ]);
             return;
         }
 
-        if(direction === "lower"){
+        if (direction === "lower") {
             max = currentGuess;
-        }
-        else {
+        } else {
             min = currentGuess + 1;
         }
         console.log(min, max);
-        const newRndNumber = generateRandomBetween(min, max, currentGuess)
+        const newRndNumber = generateRandomBetween(min, max, currentGuess);
 
-        setCurrentGuess(newRndNumber)
-    }
+        setCurrentGuess(newRndNumber);
+    };
 
     return (
         <View style={styles.screen}>
@@ -53,8 +55,16 @@ function GameScreen({ userNumber }) {
             <View>
                 <Text>Higher or lower</Text>
                 <View>
-                    <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>-</PrimaryButton>
-                    <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>+</PrimaryButton>
+                    <PrimaryButton
+                        onPress={nextGuessHandler.bind(this, "lower")}
+                    >
+                        -
+                    </PrimaryButton>
+                    <PrimaryButton
+                        onPress={nextGuessHandler.bind(this, "greater")}
+                    >
+                        +
+                    </PrimaryButton>
                 </View>
             </View>
         </View>
