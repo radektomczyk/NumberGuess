@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import NumberContainer from "../components/game/NumberContainer";
 import Card from "../components/ui/Card";
 import InstructionText from "../components/ui/InstructionText";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 
 function generateRandomBetween(min, max, exclude) {
     const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -28,6 +28,10 @@ function GameScreen({ userNumber, onGameOver }) {
             onGameOver();
         }
     }, [currentGuess, userNumber, onGameOver]);
+
+    useEffect(() => {
+        (min = 0), (max = 0);
+    }, []);
 
     const nextGuessHandler = (direction) => {
         if (
@@ -64,15 +68,15 @@ function GameScreen({ userNumber, onGameOver }) {
                         <PrimaryButton
                             onPress={nextGuessHandler.bind(this, "lower")}
                         >
-                            <Ionicons name="remove" size={24} color="white"/>
+                            <Ionicons name="remove" size={24} color="white" />
                         </PrimaryButton>
                     </View>
                     <View style={styles.buttonContainer}>
                         <PrimaryButton
                             onPress={nextGuessHandler.bind(this, "greater")}
                         >
-                            <Ionicons name="add" size={24} color="white"/>
-                            </PrimaryButton>
+                            <Ionicons name="add" size={24} color="white" />
+                        </PrimaryButton>
                     </View>
                 </View>
             </Card>
